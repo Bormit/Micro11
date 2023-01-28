@@ -5,6 +5,15 @@
         {
             "endpoint": "/v1/ordersStatus",
             "method": "GET",
+            "input_headers": ["*"],
+            "extra_config": {
+                "auth/validator": {
+                    "alg": "RS256",
+                    "jwk_url": "http://keycloak:8080/realms/master/protocol/openid-connect/certs",
+                    "disable_jwk_security": true,
+                    "operation_debug": true
+                }
+            },
             "backend": [
             {
                   "url_pattern": "/v1/orders",
@@ -12,14 +21,6 @@
                   "host": [
                     "http://status"
                   ],
-                  "extra_config": {
-                    "auth/validator": {
-                      "alg": "RS256",
-                      "jwk_url": "http://keycloak:8080/realms/master/protocol/openid-connect/certs",
-                      "disable_jwk_security": true,
-                      "operation_debug": true
-                    }
-                  },
                   "is_collection":true,
                   "mapping": {
                     "collection": "status"
@@ -54,6 +55,15 @@
         {
             "endpoint": "/v1/loyaltiesList",
             "method": "GET",
+            "input_headers": ["*"],
+            "extra_config": {
+                "auth/validator": {
+                    "alg": "RS256",
+                    "jwk_url": "http://keycloak:8080/realms/master/protocol/openid-connect/certs",
+                    "disable_jwk_security": true,
+                    "operation_debug": true
+                }
+            },
             "backend": [
             {
                   "url_pattern": "/v1/loyalties",
@@ -61,14 +71,6 @@
                   "host": [
                     "http://loyalty"
                   ],
-                  "extra_config": {
-                    "auth/validator": {
-                      "alg": "RS256",
-                      "jwk_url": "http://keycloak:8080/realms/master/protocol/openid-connect/certs",
-                      "disable_jwk_security": true,
-                      "operation_debug": true
-                  }
-                  },
                   "is_collection":true,
                   "mapping": {
                     "collection": "loyalty"
