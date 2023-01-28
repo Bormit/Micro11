@@ -1,0 +1,156 @@
+{
+    "$schema": "https://www.krakend.io/schema/v3.json",
+    "version": 3,
+    "endpoints": [
+        {
+            "endpoint": "/v1/ordersStatus",
+            "method": "GET",
+            "backend": [
+            {
+                  "url_pattern": "/v1/orders",
+                  "method": "GET",
+                  "host": [
+                    "http://status"
+                  ],
+                  "extra_config": {
+                    "auth/validator": {
+                      "alg": "RS256",
+                      "jwk_url": "http://keycloak:8080/realms/master/protocol/openid-connect/certs",
+                      "disable_jwk_security": true,
+                      "operation_debug": true
+                    }
+                  },
+                  "is_collection":true,
+                  "mapping": {
+                    "collection": "status"
+                  }
+            
+            }]
+        },
+        {
+          "endpoint": "/v1/ordersStatus/",
+          "method": "POST",          
+          "backend": [
+          {
+                "url_pattern": "/v1/orders",
+                "method": "POST",
+                "host": ["http://status"]
+          }]
+        },
+        {
+            "endpoint": "/v1/ordersStatus/{id}",
+            "method": "GET",
+            "output_encoding": "no-op",
+            "backend": [
+            {
+                  "encoding": "no-op",
+                  "url_pattern": "/v1/orders/{id}",
+                  "method": "GET",
+                  "host": [
+                    "http://status"
+                  ]
+            }]
+        },
+        {
+            "endpoint": "/v1/loyaltiesList",
+            "method": "GET",
+            "backend": [
+            {
+                  "url_pattern": "/v1/loyalties",
+                  "method": "GET",
+                  "host": [
+                    "http://loyalty"
+                  ],
+                  "extra_config": {
+                    "auth/validator": {
+                      "alg": "RS256",
+                      "jwk_url": "http://keycloak:8080/realms/master/protocol/openid-connect/certs",
+                      "disable_jwk_security": true,
+                      "operation_debug": true
+                  }
+                  },
+                  "is_collection":true,
+                  "mapping": {
+                    "collection": "loyalty"
+                  }
+            
+            }]
+        },
+        {
+          "endpoint": "/v1/loyaltiesList/",
+          "method": "POST",          
+          "backend": [
+          {
+                "url_pattern": "/v1/loyalties",
+                "method": "POST",
+                "host": ["http://loyalty"]
+          }]
+        },
+        {
+            "endpoint": "/v1/loyaltiesList/{id}",
+            "method": "GET",
+            "output_encoding": "no-op",
+            "backend": [
+            {
+                  "encoding": "no-op",
+                  "url_pattern": "/v1/loyalties/{id}",
+                  "method": "GET",
+                  "host": [
+                    "http://loyalty"
+                  ]
+            }]
+        },
+        {
+            "endpoint": "/v1/data/",
+            "method": "GET",
+            "backend": [
+            {
+                "url_pattern": "/v1/orders",
+                "method": "GET",
+                "host": [
+                  "http://status"
+                ],
+                "is_collection":true,
+                "mapping": {
+                  "collection": "status"
+                }
+            },
+            {
+                "url_pattern": "/v1/loyalties",
+                "method": "GET",
+                "host": [
+                    "http://loyalty"
+                ],
+                "is_collection":true,
+                "mapping": {
+                    "collection": "loyalty"
+                }
+                
+          
+          }] 
+        }
+    ],
+    "extra_config": {
+      "telemetry/opencensus": {
+          "sample_rate": 100,
+          "reporting_period": 0,
+          "exporters": {
+              "jaeger": {
+                  "endpoint": "http://jaeger:14268/api/traces",
+                  "service_name":"krakend",
+                  "buffer_max_count": 1000
+              },
+            "prometheus": {
+              "port": 9091,
+              "namespace": "krakend",
+              "tag_host": false,
+              "tag_path": true,
+              "tag_method": true,
+              "tag_statuscode": false
+            }
+
+          }
+      }
+  
+    }
+}
